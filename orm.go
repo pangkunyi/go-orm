@@ -6,32 +6,15 @@ import(
 )
 
 var (
-	db = initDb()
+	db *sql.DB
 )
 
-func initDb() (db *sql.DB){
-	db, err := sql.Open("sqlite3", "./big_moment.db")
-	if err != nil {
-		panic(err)
-	}
-	return db
+func Conn(_db *sql.DB){
+    db = _db
 }
 
 func Close(){
 	db.Close()
-}
-
-type Query interface {
-}
-
-type RowScanner interface {
-	Scan(dest ...interface{}) error
-}
-
-type Statement struct {
-	Sql string
-	Scan func(RowScanner) (interface{}, error)
-	Params []interface{}
 }
 
 func Delete(namespace string, query Query) (count int64, err error) {
